@@ -1,0 +1,210 @@
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+   char a[100],fs[200];
+   int i,j,ones=0;
+   printf("Enter bit string:");
+   scanf("%99s",a);
+   strcpy(fs,"01111110");
+   j=strlen(fs);
+   for(i=0;a[i]!='\0';i++)
+  { fs[j++]=a[i];
+    if(a[i]==1)
+   { ones++;
+     if(ones==5)
+     { fs[j++]=a[i];
+       ones =0;
+     }
+    }
+else ones =0;
+}
+fs[j]='\0';
+strcat(fs,"01111110");
+printf("After stuffing : = %s", fs);
+return 0;
+}
+
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+   char a[30],fs[100];
+   int i,j;
+char sd, ed;
+   printf("Enter characters");
+   scanf("%29s",a);
+   printf("enter strting delimiter:");
+   scanf(" %c",&sd);
+   printf("enter strting delimiter:");
+   scanf(" %c",&sd);   
+   fs[j++]=sd;
+   for(i=0;a[i]!='\0';i++)
+  { fs[j++]=a[i];
+    if(a[i]==sd || a[i]==ed)
+   
+     { fs[j++]=a[i];
+       
+     }
+    }
+fs[j]='\0';
+fs[j++]=ed;
+printf("After stuffing : = %s", fs);
+return 0;
+}
+
+
+exp2
+#include <stdio.h> 
+#define INF 9999 
+int main() 
+{ int g[10][10], d[10], p[10], v[10] = {0};    
+int n, s, i, j, u;    
+printf("Enter no. of vertices: ");    scanf("%d", &n);    
+printf("Enter the adjacency matrix:\n");    
+for (i = 0; i < n; i++)        
+for (j = 0; j < n; j++) {            
+scanf("%d", &g[i][j]);            
+if (g[i][j] == 0) g[i][j] = INF;              
+}    printf("Enter the starting node: ");    
+scanf("%d", &s);    
+for (i = 0; i < n; i++) { d[i] = INF; p[i] = s; }    
+d[s] = 0;    
+for (j = 0; j < n; j++) {        
+u = -1;                                  
+for (i = 0; i < n; i++)            
+if (!v[i] && (u < 0 || d[i] < d[u])) u = i;        
+v[u] = 1;       
+for (i = 0; i < n; i++)             
+if (!v[i] && d[u] + g[u][i] < d[i]) {
+d[i] = d[u] + g[u][i];
+p[i] = u;
+}    }    
+for (i = 0; i < n; i++)        
+if (i != s && d[i] < INF) {            
+printf("\nDistance of node%d=%d\nPath=%d", i, d[i], i);            
+for (j = i; j != s; j = p[j])                
+printf("<-%d", p[j]);        
+}  printf("\n");    return 0; }
+Enter no. of vertices: 5
+Enter the adjacency matrix:
+0 10 0 30 100
+10 0 50 0 0
+0 50 0 20 10
+30 0 20 0 60
+100 0 10 60 0
+Enter the starting node: 0
+
+
+exp3
+#include <stdio.h>
+#include <string.h>
+char g[] = "10001000000100001", t[128], w[128];
+int a, e, i, j;
+void crc() { /* remainder ends up in w+a */
+ strcpy(w, t);
+ for (i = 0; w[i + 16]; i++)
+ if (w[i] == '1')
+ for (j = 0; j < 17; j++)
+ w[i + j] ^= g[j] & 1; /* XOR */
+}
+int main() {
+ printf("\nEnter poly : ");
+ scanf("%100s", t);
+ printf("\nGenerating Polynomial is: %s", g);
+ a = strlen(t);
+ strcat(t, "0000000000000000"); /* add 16 zeros */
+ printf("\nModified t[u] is : %s", t);
+ crc();
+ printf("\nChecksum is : %s", w + a);
+ strcpy(t + a, w + a); /* data + checksum */
+ printf("\nFinal Codeword is : %s", t);
+ printf("\nTest Error detection 0(yes) 1(no) ? : ");
+ scanf("%d", &e);
+ if (e == 0) {
+ printf("Enter position where error is to inserted : ");
+ scanf("%d", &e);
+ t[e] ^= 1; /* flip one bit */
+ printf("Errorneous data : %s\n", t);
+ }
+ crc(); /* receiver side */
+ printf(strchr(w + a, '1') ? "Error detected.\n" : "No Error Detected.\n");
+ return 0;
+}
+Enter poly : 1010111011011011
+
+exp4
+#include <stdio.h>
+#include <stdlib.h>
+int main() {
+ int i, n = 10; /* number of frames */
+ printf("number of frames is %d ", n);
+ for (i = 1; i <= n; i++) {
+ printf("\nsending frames is %d", i);
+ if (rand() % 5 == 0) { /* ack lost -> timeout */
+ printf("\n waiting for 1 seconds\n");
+ printf("\n sending frames %d\n", i); /* resend the frame */
+ }
+ printf("\n ack for frame %d\n", i);
+ }
+ printf("\n end of stop and wait protocol\n");
+ return 0;
+}
+
+#include <stdio.h>
+int main() {
+ int w, f, i, fr[50];
+ printf("Enter window size: ");
+ scanf("%d", &w);
+ printf("Enter number of frames: ");
+ scanf("%d", &f);
+ printf("Enter %d frames: ", f);
+ for (i = 0; i < f; i++)
+ scanf("%d", &fr[i]);
+ printf("\nFrames sent (ACK awaited after every %d frames):\n\n", w);
+ for (i = 0; i < f; i++) {
+ printf("%d ", fr[i]);
+ if ((i + 1) % w == 0 || i == f - 1) // window full or last frame
+ printf("\nAcknowledgement received for above frames\n\n");
+ }
+ return 0;
+}
+Enter window size: 5
+Enter number of frames to transmit: 10
+Enter 10 frames: 1 2 1 0 0 0 0 0 0 1
+
+exp5
+#include <stdio.h>
+int main() {
+ int cap, rate, in[1000] = {0}, n = 0, ch, left = 0, x, sent, drop, i;
+ printf("\n enter bucket size : ");
+ scanf("%d", &cap);
+ printf("\n enter output rate :");
+ scanf("%d", &rate);
+ do {
+ printf("\n enter number of packets coming at second %d :", n + 1);
+ scanf("%d", &in[n++]);
+ printf("\n enter 1 to contiue or 0 to quit......... ");
+ scanf("%d", &ch);
+ } while (ch && n < 50);
+ printf("\n second \t recieved \t sent \t dropped \t remained \n");
+ for (i = 0; left || i < n; i++) {
+ x = in[i] + left; /* packets in bucket */
+ sent = x < rate ? x : rate; /* leak at most 'rate' */
+ left = x - sent; /* still waiting */
+ drop = left > cap ? left - cap : 0; /* overflow is dropped */
+ left -= drop;
+ printf("%d \t%d\t \t %d\t \t %d \t %d \n", i + 1, in[i], sent, drop, left);
+ }
+ return 0;
+}
+enter bucket size : 5
+ enter output rate :3
+ enter number of packets coming at second 1 :6
+ enter 1 to contiue or 0 to quit......... 1
+ enter number of packets coming at second 2 :2
+ enter 1 to contiue or 0 to quit......... 1
+ enter number of packets coming at second 3 :3
+ enter 1 to contiue or 0 to quit......... 1
+ enter number of packets coming at second 4 :6
+ enter 1 to contiue or 0 to quit......... 0
