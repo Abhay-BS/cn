@@ -76,6 +76,15 @@ END{
 printf("\nNo. of TCP Packets recieved at node 3 %d\n",tcppack);
 printf("\nNo. of TCP Packets recieved at node 2 %d\n",tcppack1);
 }
+ns exp1.tcl
+export DISPLAY="$(hostname).local:0"
+awk -f exp1.awk exp1.tr
+Bandwidth             queue size 
+N0-N2 N1-N2 N2-N3
+100   100    100      20 20 20
+50    50     30       20 30 10
+30    200    10       20 50 20
+
 Program 2
 set val(stop) 25.0
 set ns [new Simulator]
@@ -158,6 +167,18 @@ END{
 printf("\nNo. of TCP Packets sent bw node 0 and node 2:%d\n",tcpPkt);
 printf("\nNo. of TCP Packets sent bw node 1 and node2 at node 2:%d\n",cbrPkt);
 }
+
+Simulation Time              Packet Size     Packet recieved at node 2
+Start =1                    TCP=1500,UDP=1000
+Stop=10
+
+Start =1                    TCP=1000,UDP=1000
+Stop=20
+
+Start =1                     TCP=1300,UDP=1000
+Stop=25
+
+
 Program 3
 set ns [new Simulator]
 set tf [open exp3.tr w]
@@ -229,6 +250,14 @@ END {
  printf("No. of CBR Packets recieved at node 7=:%d\n",cbrpkt);
  printf("Throughput = %fbps\n",((packet*8)/time));
 }
+
+Data Rate     Error Rate  Total CBR                   Throughput
+                          packets recieved at node 7
+0.001         0.1          1255                        3347503.54 bps
+0.01          0.3          95
+0.1           0.5          05
+
+
 Program 4
 set ns [new Simulator]
 set tf [open exp4.tr w]
@@ -288,6 +317,9 @@ printf("%f\t%f\t\n",$1,$7);
 }
 END {
 }
+awk -f exp4.awk file1.tr > a1
+awk -f exp4.awk file2.tr > a2
+
 Program 5
 set ns [new Simulator]
 set tf [open exp5.tr w]
